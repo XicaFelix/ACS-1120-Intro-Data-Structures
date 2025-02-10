@@ -46,6 +46,9 @@ def is_valid_file_path(string):
   pattern = r'^[\w\-.\\/:]+$'  # Matches valid file path characters
   return bool(re.match(pattern, string)) and os.path.isfile(string)
 
+def unique_words(histogram):
+  pass
+
 text = """The pale Usher—threadbare in coat, heart, body, and brain; I see him
 now. He was ever dusting his old lexicons and grammars, with a queer
 handkerchief, mockingly embellished with all the gay flags of all the
