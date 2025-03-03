@@ -81,28 +81,32 @@ class LinkedList:
         return None
 
     def delete(self, item):
-        """Delete the given item from this linked list, or raise ValueError."""
-        if self.is_empty():
-            raise ValueError(f"Item not found: {item}")
+        """Delete the first occurrence of item in the list."""
+        current = self.head
+        prev = None
         
-        # Special case: if the item is in the head node
-        if self.head.data == item:
-            self.head = self.head.next
-            if self.head is None:  # List is now empty, so set tail to None as well
+        # Case 1: The list is empty
+        if current is None:
+            raise ValueError(f"Item not found: {item}")
+
+        # Case 2: Item to be deleted is the head
+        if current.data == item:
+            self.head = current.next
+            if self.head is None:  # If list becomes empty, tail should also be None
                 self.tail = None
             return
-        
-        # Otherwise, loop through the list to find the item
-        node = self.head
-        while node.next is not None:
-            if node.next.data == item:
-                node.next = node.next.next
-                if node.next is None:  # If item was the last node, update the tail
-                    self.tail = node
+
+        # Case 3: Item to be deleted is somewhere other than the head
+        while current:
+            if current.data == item:
+                if current.next is None:  # If it's the last node, update the tail
+                    self.tail = prev
+                prev.next = current.next
                 return
-            node = node.next
-        
-        # If we get here, the item was not found
+            prev = current
+            current = current.next
+
+        # Case 4: Item not found, raise ValueError
         raise ValueError(f"Item not found: {item}")
 
     def replace(self, old_item, new_item):
@@ -110,9 +114,9 @@ class LinkedList:
         while node is not None:
             if node.data == old_item:
                 node.data = new_item
-                return True  # Item replaced, return True
+                return True
             node = node.next
-        return False  # If item was not found, return False
+        return False
 
 def test_linked_list():
     ll = LinkedList()
