@@ -64,38 +64,48 @@ class HashTable(object):
                 return True
         return False
 
-    def get(self, key):
-        """Return the value associated with the given key, or raise KeyError."""
-        index = self._bucket_index(key)
-        bucket = self.buckets[index]
-        for k, v in bucket.items():
-            if k == key:
-                return v
-        raise KeyError('Key not found: {}'.format(key))
-
     def set(self, key, value):
         """Insert or update the given key with its associated value."""
         index = self._bucket_index(key)
         bucket = self.buckets[index]
-        # Check if key already exists and update value if it does
-        for k, v in bucket.items():
+        
+        # Look for the key in the linked list
+        for i, (k, v) in enumerate(bucket.items()):
             if k == key:
-                # Update existing key's value
-                bucket.delete(k)
-                bucket.append((key, value))
+                # If found, update the value
+                bucket.items()[i] = (key, value)  # Directly replace the key-value pair
                 return
-        # Insert new key-value pair
+        
+        # If the key is not found, append the new key-value pair
         bucket.append((key, value))
 
-    def delete(self, key):
-        """Delete the given key from this hash table, or raise KeyError."""
+    def get(self, key):
+        """Return the value associated with the given key."""
         index = self._bucket_index(key)
         bucket = self.buckets[index]
+        
         for k, v in bucket.items():
             if k == key:
-                bucket.delete(k)
+                return v
+        raise KeyError(f"Key {key} not found")
+
+
+
+
+    def delete(self, key):
+        """Delete the key-value pair for the given key."""
+        index = self._bucket_index(key)
+        bucket = self.buckets[index]
+        
+        # Iterate over the linked list to find the key
+        for i, (k, v) in enumerate(bucket.items()):
+            if k == key:
+                bucket.items().pop(i)  # Remove the key-value pair from the bucket
                 return
-        raise KeyError('Key not found: {}'.format(key))
+
+        # If the key is not found, raise an error
+        raise ValueError(f"Item not found: {key}")
+
 
 
 def test_hash_table():

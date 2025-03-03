@@ -1,5 +1,4 @@
 class Node(object):
-
     def __init__(self, data):
         """Initialize this node with the given data."""
         self.data = data
@@ -30,16 +29,12 @@ class LinkedList:
 
     def items(self):
         """Return a list (dynamic array) of all items in this linked list."""
-        items = []  # O(1) time to create empty list
-        # Start at head node
-        node = self.head  # O(1) time to assign new variable
-        # Loop until node is None, which is one node too far past tail
-        while node is not None:  # Always n iterations because no early return
-            items.append(node.data)  # O(1) time (on average) to append to list
-            # Skip to next node to advance forward in linked list
-            node = node.next  # O(1) time to reassign variable
-        # Now list contains items from all nodes
-        return items  # O(1) time to return list
+        items = []
+        node = self.head
+        while node is not None:
+            items.append(node.data)
+            node = node.next
+        return items
 
     def is_empty(self):
         """Return a boolean indicating whether this linked list is empty."""
@@ -77,10 +72,10 @@ class LinkedList:
             self.head = new_node
 
     def find(self, matcher):
-        """Return an item from this linked list if it is present."""
+        """Return an item from this linked list if it matches the given condition."""
         node = self.head
         while node is not None:
-            if node.data == matcher:
+            if matcher(node.data):
                 return node.data
             node = node.next
         return None
@@ -110,6 +105,14 @@ class LinkedList:
         # If we get here, the item was not found
         raise ValueError(f"Item not found: {item}")
 
+    def replace(self, old_item, new_item):
+        node = self.head
+        while node is not None:
+            if node.data == old_item:
+                node.data = new_item
+                return True  # Item replaced, return True
+            node = node.next
+        return False  # If item was not found, return False
 
 def test_linked_list():
     ll = LinkedList()
