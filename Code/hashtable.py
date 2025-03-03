@@ -73,7 +73,7 @@ class HashTable(object):
         for i, (k, v) in enumerate(bucket.items()):
             if k == key:
                 # If found, update the value
-                bucket.items()[i] = (key, value)  # Directly replace the key-value pair
+                bucket.items()[i] = (key, value)
                 return
         
         # If the key is not found, append the new key-value pair
@@ -89,24 +89,15 @@ class HashTable(object):
                 return v
         raise KeyError(f"Key {key} not found")
 
-
-
-
     def delete(self, key):
-        """Delete the key-value pair for the given key."""
+        """Delete the given key from this hash table, or return False."""
         index = self._bucket_index(key)
         bucket = self.buckets[index]
-        
-        # Iterate over the linked list to find the key
-        for i, (k, v) in enumerate(bucket.items()):
+        for k, v in bucket.items():
             if k == key:
-                bucket.items().pop(i)  # Remove the key-value pair from the bucket
-                return
-
-        # If the key is not found, raise an error
-        raise ValueError(f"Item not found: {key}")
-
-
+                bucket.delete(k)
+                return True  # Return True if item is successfully deleted
+        return False  # Return False if key is not found
 
 def test_hash_table():
     ht = HashTable()
@@ -127,7 +118,7 @@ def test_hash_table():
     print('length: {}'.format(ht.length()))
 
     # Enable this after implementing delete method
-    delete_implemented = True
+    delete_implemented = False
     if delete_implemented:
         print('\nTesting delete:')
         for key in ['I', 'V', 'X']:
