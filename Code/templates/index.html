@@ -4,9 +4,93 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tweet Generator</title>
+  <title>Moby Dick Sentence Generator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+    }
+    p {
+      font-size: 1.2em;
+      margin: 20px 0;
+    }
+    blockquote {
+      font-size: 1.5em;
+      font-style: italic;
+      color: #555;
+      margin: 30px auto;
+      padding-left: 20px;
+      border-left: 4px solid #ddd;
+      max-width: 80%;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 <body>
-    <blockquote>{{sampled_word}}</blockquote>
+
+  <header>
+    <h1>Moby Dick Sentence Generator</h1>
+  </header>
+
+  <main>
+    <p>Welcome to the Moby Dick Sentence Generator! Below is a randomly generated sentence inspired by Herman Melville's classic novel, <em>Moby Dick</em>.</p>
+
+    <blockquote id="sentence">{{generated_sentence}}</blockquote>
+
+    <button onclick="generateNewSentence()">Generate New Sentence</button>
+
+  </main>
+
+  <footer>
+    <p>Powered by the Moby Dick Sentence Generator</p>
+  </footer>
+
+  <script>
+    function generateNewSentence() {
+      fetch('/generate_sentence')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("sentence").innerText = data.generated_sentence;
+        })
+        .catch(error => console.error("Error fetching new sentence:", error));
+    }
+  </script>
+
 </body>
 </html>

@@ -52,7 +52,7 @@ class HashTable(object):
         """Return the number of key-value entries by traversing its buckets."""
         count = 0
         for bucket in self.buckets:
-            count += len(bucket.items())
+            count += bucket.length()
         return count
 
     def contains(self, key):
@@ -69,13 +69,15 @@ class HashTable(object):
         index = self._bucket_index(key)
         bucket = self.buckets[index]
         
-        # Look for the key in the linked list
-        for i, (k, v) in enumerate(bucket.items()):
-            if k == key:
-                # If found, update the value
-                bucket.items()[i] = (key, value)
+        # Check if the key already exists in the bucket
+        node = bucket.head
+        while node is not None:
+            if node.data[0] == key:
+                # Update the value if the key exists
+                node.data = (key, value)
                 return
-            
+            node = node.next
+        
         # If the key is not found, append the new key-value pair
         bucket.append((key, value))
 
@@ -90,17 +92,33 @@ class HashTable(object):
         raise KeyError(f"Key {key} not found")
 
     def delete(self, key):
-        """Delete the given key from this hash table, or return False."""
+        """Delete the given key from this hash table, or raise KeyError."""
         index = self._bucket_index(key)
         bucket = self.buckets[index]
         
-        # Traverse the items in the linked list and check for the key
-        for k, v in bucket.items():
-            if k == key:
-                bucket.delete(k)
-                self.length()
-                return True
-        return False
+        # Traverse the linked list and delete the key if found
+        node = bucket.head
+        prev = None
+        while node is not None:
+            if node.data[0] == key:
+                if prev is None:
+                    # If the key is in the head node
+                    bucket.head = node.next
+                    if bucket.head is None:
+                        # If the list becomes empty, update the tail
+                        bucket.tail = None
+                else:
+                    # If the key is in a middle or tail node
+                    prev.next = node.next
+                    if node.next is None:
+                        # If the key is in the tail node, update the tail
+                        bucket.tail = prev
+                return
+            prev = node
+            node = node.next
+        
+        # If the key is not found, raise KeyError
+        raise KeyError(f"Key {key} not found")
 
 def test_hash_table():
     ht = HashTable()

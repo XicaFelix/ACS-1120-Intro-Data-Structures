@@ -25,7 +25,7 @@ class LinkedList:
         ll_str = ""
         for item in self.items():
             ll_str += f'({item}) -> '
-        return ll_str
+        return ll_str + 'None'  # Add 'None' to indicate the end of the list
 
     def items(self):
         """Return a list (dynamic array) of all items in this linked list."""
@@ -71,14 +71,14 @@ class LinkedList:
             new_node.next = self.head
             self.head = new_node
 
-    def find(self, matcher):
-        """Return an item from this linked list if it matches the given condition."""
+    def find(self, item):
+        """Return True if the item is found in the list, otherwise return False."""
         node = self.head
         while node is not None:
-            if matcher(node.data):
-                return node.data
+            if node.data == item:
+                return True
             node = node.next
-        return None
+        return False
 
     def delete(self, item):
         """Delete the first occurrence of item in the list."""
@@ -110,13 +110,14 @@ class LinkedList:
         raise ValueError(f"Item not found: {item}")
 
     def replace(self, old_item, new_item):
-        node = self.head
-        while node is not None:
-            if node.data == old_item:
-                node.data = new_item
-                return True
-            node = node.next
-        return False
+            """Replace the first occurrence of old_item with new_item."""
+            node = self.head
+            while node is not None:
+                if node.data == old_item:
+                    node.data = new_item
+                    return True  # Return True if the item was replaced
+                node = node.next
+            return False  # Return False if the item was not found
 
 def test_linked_list():
     ll = LinkedList()
