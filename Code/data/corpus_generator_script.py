@@ -24,7 +24,7 @@ def preprocess_corpus(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         text = file.read().lower()
     
-    words = re.findall(r'\b\w+\b', text)
+    words = re.findall(r'\b[a-zA-Z0-9]+\b', text)
     return words
 
 if __name__ == "__main__":
