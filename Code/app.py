@@ -1,5 +1,8 @@
 """Main script, uses other modules to generate sentences."""
+import sys
+import os
 from flask import Flask, render_template, jsonify
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from markov_chain import MarkovModel
 from tokenizer import tokenize
 

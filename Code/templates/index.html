@@ -19,6 +19,20 @@
       padding: 20px;
       text-align: center;
     }
+    .hero-image {
+      background-image: url("{{ url_for('static', filename='moby_dick.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      height: 400px;
+      width: 100%;
+    }
+    .hero-text {
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+      font-size: 2em;
+      font-weight: bold;
+    }
     main {
       padding: 30px;
       text-align: center;
@@ -68,8 +82,15 @@
     <h1>Moby Dick Sentence Generator</h1>
   </header>
 
+  <!-- Hero Image Section -->
+  <div class="hero-image">
+    <div class="hero-text">
+      Welcome to the Moby Dick Sentence Generator!
+    </div>
+  </div>
+
   <main>
-    <p>Welcome to the Moby Dick Sentence Generator! Below is a randomly generated sentence inspired by Herman Melville's classic novel, <em>Moby Dick</em>.</p>
+    <p>Below is a randomly generated sentence inspired by Herman Melville's classic novel, <em>Moby Dick</em>.</p>
 
     <blockquote id="sentence">{{generated_sentence}}</blockquote>
 
