@@ -1,6 +1,7 @@
 """Main script, uses other modules to generate sentences."""
 from flask import Flask, render_template, jsonify
 from markov_chain import MarkovModel
+from tokenizer import tokenize
 
 
 app = Flask(__name__)
@@ -9,7 +10,16 @@ app = Flask(__name__)
 # Any code placed here will run only once, when the server starts.
 # Initialize the Markov Model
 markov = MarkovModel(n_gram=2)
-markov.build_model("data/corpus.txt")
+
+def build_markov_model_from_file(file_path):
+    """Read a file, tokenize its contents, and build the Markov model."""
+    with open(file_path, 'r') as file:
+        text = file.read().lower()
+    tokens = tokenize(text)
+    markov.build_model(tokens)
+
+# Build the Markov model from the corpus
+build_markov_model_from_file("data/corpus.txt")
 
 @app.route("/")
 def home():

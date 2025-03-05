@@ -22,11 +22,10 @@ class MarkovModel:
           words = re.findall(r'\b\w+\b', text)  
           return words 
 
-    def build_model(self, file_path):
+    def build_model(self, words):
         """Build a Markov chain from a list of words."""
-        words = self.read_file(file_path)
         for i in range(len(words) - self.n_gram):
-            prefix = tuple(words[i:i+self.n_gram])  
+            prefix = tuple(words[i:i+self.n_gram])
             next_word = words[i+self.n_gram]
 
             if prefix not in self.chain:
